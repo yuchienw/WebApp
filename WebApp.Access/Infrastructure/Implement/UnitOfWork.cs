@@ -16,10 +16,8 @@ namespace WebApp.Access.Infrastructure.Implement
         private readonly IDbConnection _connection;
         private IDbTransaction _transaction;
 
+        // Repository
         private ICustomerRepo? _customerRepo;
-
-        public IDbConnection Connection => _connection;
-        public IDbTransaction? Transaction => _transaction;
 
         public ICustomerRepo CustomerRepo => _customerRepo ??= new CustomerRepo(_transaction);
 
