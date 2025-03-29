@@ -18,17 +18,22 @@ namespace WebApp.Access.Repository.Implement
 
         }
 
-        public override async Task<object> AddAsync(Customer entity)
+        public override async Task<object?> AddAsync(Customer entity)
         {
-            var sql = "Insert into Customers (CustomerID, CustomerName, ContactName, Address, City, Region, PostalCode, Country, Phone, Fax)" +
-                "Values (@CustomerID, @CustomerName, @ContactName, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax)";
-            var res = await _connection.ExecuteAsync(sql, entity, _transaction);
-            return entity.CustomerID;
+            var sql = "Insert into Customers (CustomerID, CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax)" +
+                "Values (@CustomerID, @CompanyName, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax)";
+            
+            var rowsAffected = await _connection.ExecuteAsync(sql, entity, _transaction);
+
+            if (rowsAffected > 0)
+                return entity.CustomerID;
+
+            return null;
         }
 
         public override async Task<bool> UpdateAsync(Customer entity)
         {
-            var sql = "Update Customers Set CustomerName = @CustomerName, ContactName = @ContactName, Address = @Address, City = @City, Region = @Region, PostalCode = @PostalCode, Country = @Country, Phone = @Phone, Fax = @Fax Where CustomerID = @CustomerID";
+            var sql = "Update Customers Set CompanyName = @CompanyName, ContactName = @ContactName, ContactTitle = @ContactTitle, Address = @Address, City = @City, Region = @Region, PostalCode = @PostalCode, Country = @Country, Phone = @Phone, Fax = @Fax Where CustomerID = @CustomerID";
             var res = await _connection.ExecuteAsync(sql, entity, _transaction);
             return res > 0;
         }
@@ -43,7 +48,7 @@ namespace WebApp.Access.Repository.Implement
         public override async Task<IEnumerable<Customer>> FindAllAsync()
         {
             var sql = "Select * From Customers With(nolock)";
-            return await _connection.QueryAsync<Customer>(sql, _transaction);
+            return await _connection.QueryAsync<Customer>(sql,new { }, _transaction);
         }
 
         public override async Task<Customer?> FindAsync(object id)

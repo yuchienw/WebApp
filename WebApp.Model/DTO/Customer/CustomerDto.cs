@@ -14,6 +14,8 @@ namespace WebApp.Model.DTO.Customer
 
         public required string ContactName { get; set; }
 
+        public required string ContactTitle { get; set; }
+
         public required string Address { get; set; }
 
         public required string City { get; set; }
