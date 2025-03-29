@@ -7,15 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entity\" />
-    <Folder Include="Infrastructure\Interface\" />
-    <Folder Include="Infrastructure\Implement\" />
-    <Folder Include="Repository\Interface\" />
-    <Folder Include="Repository\Implement\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
   </ItemGroup>
 
 </Project>
