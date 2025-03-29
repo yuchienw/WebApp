@@ -27,7 +27,6 @@ namespace WebApp.Access.Infrastructure.Implement
 
             _connectionFactory = sqlConnectionFactory;
             _connection = _connectionFactory.CreateConnection();
-            _connection.Open();
 
             _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
         }
