@@ -8,7 +8,7 @@ namespace WebApp.Access.Repository.Interface
 {
     public interface IGenericRepo<T>
     {
-        public Task<object> AddAsync(T entity);
+        public Task<object?> AddAsync(T entity);
 
         public Task<bool> UpdateAsync(T entity);
 

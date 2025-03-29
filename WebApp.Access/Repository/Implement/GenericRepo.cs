@@ -18,7 +18,7 @@ namespace WebApp.Access.Repository.Implement
             _transaction = transaction;
         }
 
-        public abstract Task<object> AddAsync(T entity);
+        public abstract Task<object?> AddAsync(T entity);
 
         public abstract Task<bool> UpdateAsync(T entity);
 
