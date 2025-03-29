@@ -35,7 +35,6 @@ namespace WebApp.Access.Infrastructure.Implement
         {
             try
             {
-                
                 _transaction?.Commit();
             }
             catch
@@ -46,7 +45,6 @@ namespace WebApp.Access.Infrastructure.Implement
             finally
             {
                 Dispose();
-                _transaction = _connection.BeginTransaction(IsolationLevel.ReadCommitted);
             }
         }
 
