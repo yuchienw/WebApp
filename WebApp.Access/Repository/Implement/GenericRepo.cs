@@ -22,7 +22,7 @@ namespace WebApp.Access.Repository.Implement
 
         public abstract Task<bool> UpdateAsync(T entity);
 
-        public abstract Task<bool> DeleteAsync(T entity);
+        public abstract Task<bool> DeleteAsync(object id);
 
         public abstract Task<T?> FindAsync(object id);
 

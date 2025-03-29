@@ -22,7 +22,7 @@ namespace WebApp.Access.Repository.Implement
         {
             var sql = "Insert into Customers (CustomerID, CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax)" +
                 "Values (@CustomerID, @CompanyName, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @Phone, @Fax)";
-            
+
             var rowsAffected = await _connection.ExecuteAsync(sql, entity, _transaction);
 
             if (rowsAffected > 0)
@@ -38,17 +38,17 @@ namespace WebApp.Access.Repository.Implement
             return res > 0;
         }
 
-        public override async Task<bool> DeleteAsync(Customer entity)
+        public override async Task<bool> DeleteAsync(object id)
         {
             var sql = "Delete From Customers Where CustomerID = @CustomerID";
-            var res = await _connection.ExecuteAsync(sql, entity, _transaction);
+            var res = await _connection.ExecuteAsync(sql, new { CustomerID = id }, _transaction);
             return res > 0;
         }
 
         public override async Task<IEnumerable<Customer>> FindAllAsync()
         {
             var sql = "Select * From Customers With(nolock)";
-            return await _connection.QueryAsync<Customer>(sql,new { }, _transaction);
+            return await _connection.QueryAsync<Customer>(sql, new { }, _transaction);
         }
 
         public override async Task<Customer?> FindAsync(object id)

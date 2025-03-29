@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WebApp.API.Services.Implement;
 using WebApp.API.Services.Interface;
 using WebApp.Model.DTO.Customer;
@@ -12,40 +13,84 @@ namespace WebApp.API.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        public CustomerController(ICustomerService customerService) {
+
+        public CustomerController(ICustomerService customerService)
+        {
             _customerService = customerService;
         }
 
-        // GET: api/<CustomerController>
+        /// <summary>
+        /// 查詢所有客戶
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var customers = await _customerService.GetCustomers();
+
+            if (customers.Count() == 0)
+                return NoContent();
+
+            return Ok(customers);
         }
 
-        // GET api/<CustomerController>/5
+        /// <summary>
+        /// 查詢特定客戶By ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<CustomerDto?> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            return await _customerService.GetCustomerByID(id);
+            var customer = await _customerService.GetCustomerByID(id);
+
+            if (customer == null)
+                return NotFound();
+
+            return Ok(customer);
         }
 
-        // POST api/<CustomerController>
+        /// <summary>
+        /// 新增客戶
+        /// </summary>
+        /// <param name="customer">客戶資料</param>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CustomerDto customer)
         {
+            var customerID = await _customerService.CreateCustomer(customer);
+
+            if (customerID == null) return StatusCode(500, "新增失敗");
+
+            return Ok(customerID);
         }
 
-        // PUT api/<CustomerController>/5
+        /// <summary>
+        /// 修改特定客戶By ID
+        /// </summary>
+        /// <param name="id">客戶ID</param>
+        /// <param name="customer">客戶資料</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(string id, [FromBody] CustomerDto customer)
         {
+            var result = await _customerService.UpdateCustomer(id, customer);
+
+            if (!result) return StatusCode(500, "修改失敗");
+
+            return Ok(result);
         }
 
-        // DELETE api/<CustomerController>/5
+        /// <summary>
+        /// 刪除特定客戶By ID
+        /// </summary>
+        /// <param name="id">客戶ID</param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
+            var result = await _customerService.DeleteCustomer(id);
+
+            if (!result) return StatusCode(500, "刪除失敗");
+
+            return Ok(result);
         }
     }
 }

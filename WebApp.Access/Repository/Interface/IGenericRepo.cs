@@ -12,7 +12,7 @@ namespace WebApp.Access.Repository.Interface
 
         public Task<bool> UpdateAsync(T entity);
 
-        public Task<bool> DeleteAsync(T entity);
+        public Task<bool> DeleteAsync(object id);
 
         public Task<T?> FindAsync(object id);
 

@@ -15,27 +15,20 @@ namespace WebApp.API.Services.Implement
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> CreateCustomer(CustomerDto customerDto)
+        public async Task<IEnumerable<CustomerDto>> GetCustomers()
         {
             try
             {
-                Customer customer = customerDto.Adapt<Customer>();
                 using (var uow = _unitOfWork)
                 {
-                    var res = await uow.CustomerRepo.AddAsync(customer);
-                    uow.SaveChanges();
-                    return res.ToString();
+                    List<Customer> customer = (await uow.CustomerRepo.FindAllAsync()).ToList();
+                    return customer.Adapt<IEnumerable<CustomerDto>>();
                 }
             }
             catch
             {
                 throw;
             }
-        }
-
-        public async Task<bool> DeleteCustomer(string id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<CustomerDto?> GetCustomerByID(string id)
@@ -54,14 +47,80 @@ namespace WebApp.API.Services.Implement
             }
         }
 
-        public async Task<IEnumerable<CustomerDto>> GetCustomers()
+        public async Task<string?> CreateCustomer(CustomerDto dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Customer customer = dto.Adapt<Customer>();
+                using (var uow = _unitOfWork)
+                {
+                    var res = await uow.CustomerRepo.AddAsync(customer);
+
+                    uow.SaveChanges();
+
+                    if (res != null)
+                        return res.ToString();
+
+                    return null;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
-        public async Task<bool> UpdateCustomer(CustomerDto customer)
+        public async Task<bool> UpdateCustomer(string id, CustomerDto dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var uow = _unitOfWork)
+                {
+                    Customer customer = await uow.CustomerRepo.FindAsync(id);
+
+                    if (customer == null) return false;
+                    
+                    customer.CompanyName = dto.CompanyName;
+                    customer.ContactName = dto.ContactName;
+                    customer.ContactTitle = dto.ContactTitle;
+                    customer.Address = dto.Address;
+                    customer.City = dto.City;
+                    customer.Region = dto.Region;
+                    customer.PostalCode = dto.PostalCode;
+                    customer.Country = dto.Country;
+                    customer.Phone = dto.Phone;
+                    customer.Fax = dto.Fax;
+
+                    var isSuccess = await uow.CustomerRepo.UpdateAsync(customer);
+
+                    uow.SaveChanges();
+
+                    return isSuccess;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteCustomer(string id)
+        {
+            try
+            {
+                using (var uow = _unitOfWork)
+                {
+                    var isSuccess = await uow.CustomerRepo.DeleteAsync(id);
+
+                    uow.SaveChanges();
+
+                    return isSuccess;
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

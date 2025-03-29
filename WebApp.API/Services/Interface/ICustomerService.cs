@@ -5,9 +5,9 @@ namespace WebApp.API.Services.Interface
 {
     public interface ICustomerService
     {
-        public Task<string> CreateCustomer(CustomerDto customer);
+        public Task<string?> CreateCustomer(CustomerDto dto);
 
-        public Task<bool> UpdateCustomer(CustomerDto customer);
+        public Task<bool> UpdateCustomer(string id, CustomerDto dto);
 
         public Task<bool> DeleteCustomer(string id);
 
