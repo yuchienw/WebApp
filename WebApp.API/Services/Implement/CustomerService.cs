@@ -15,7 +15,7 @@ namespace WebApp.API.Services.Implement
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> CreateCustomer(CustomerDto customerDto)
+        public async Task<string> CreateCustomer(CustomerDto customerDto)
         {
             try
             {
@@ -24,7 +24,7 @@ namespace WebApp.API.Services.Implement
                 {
                     var res = await uow.CustomerRepo.AddAsync(customer);
                     uow.SaveChanges();
-                    return res;
+                    return res.ToString();
                 }
             }
             catch
@@ -33,12 +33,12 @@ namespace WebApp.API.Services.Implement
             }
         }
 
-        public async Task<bool> DeleteCustomer(int id)
+        public async Task<bool> DeleteCustomer(string id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<CustomerDto?> GetCustomerByID(int id)
+        public async Task<CustomerDto?> GetCustomerByID(string id)
         {
             try
             {

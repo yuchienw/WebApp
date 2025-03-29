@@ -25,7 +25,7 @@ namespace WebApp.API.Controllers
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
-        public async Task<CustomerDto?> Get(int id)
+        public async Task<CustomerDto?> Get(string id)
         {
             return await _customerService.GetCustomerByID(id);
         }

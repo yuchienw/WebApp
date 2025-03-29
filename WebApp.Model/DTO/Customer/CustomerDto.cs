@@ -8,7 +8,7 @@ namespace WebApp.Model.DTO.Customer
 {
     public class CustomerDto
     {
-        public int CustomerID { get; set; }
+        public required string CustomerID { get; set; }
 
         public required string CustomerName { get; set; }
 

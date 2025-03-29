@@ -9,7 +9,7 @@ namespace WebApp.Access.Entity
 {
     public class Customer
     {
-        public int CustomerID { get; set; }
+        public required string CustomerID { get; set; }
 
         public required string CustomerName { get; set; }
 
